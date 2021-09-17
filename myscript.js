@@ -2,8 +2,6 @@ let humanWins = 0;
 let computerWins = 0;
 gameWinner = '';
 
-let playerSelection = prompt(`Enter 'rock', 'paper', or 'scissors'.`);
-
 function computerPlay() {
   let choices = ['rock', 'paper', 'scissors']
   return choices[Math.floor(Math.random() * choices.length)]
