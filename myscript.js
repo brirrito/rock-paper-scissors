@@ -1,36 +1,56 @@
-let humanWins = 0;
-let computerWins = 0;
-gameWinner = '';
+let humanScore = 0;
+let computerScore = 0;
+const buttons = document.querySelectorAll('input');
 
 function computerPlay() {
   let choices = ['rock', 'paper', 'scissors']
   return choices[Math.floor(Math.random() * choices.length)]
 }
 
-function playRound(playerSelection, computerSelection) {
-
-  if (playerSelection === computerSelection) {
-    return `It's a tie! Score: ${humanWins}:${computerWins}`;
-  }
-  else if ((playerSelection == 'rock' && computerSelection == 'scissors') || (playerSelection == 'scissors' && computerSelection == 'paper') || (playerSelection == 'paper' && computerSelection == 'rock')) {
-    humanWins++;
-    gameWinner = 'player';
-    return `Player wins! ${playerSelection} beats ${computerSelection}! Score: ${humanWins}:${computerWins}`;
-  }
-
-  else {
-    computerWins++;
-    gameWinner = 'computer';
-    return `You lose! ${computerSelection} beats ${playerSelection}. Score: ${humanWins}:${computerWins}`;
-  }
+function disableButtons() {
+  buttons.forEach(elem => {
+    elem.disabled = true;
+  })
 }
 
-
-for (let i = 0; i < 5 ; i++) {
-  let playerSelection = prompt(`Enter 'rock', 'paper', or 'scissors'.`);
+function playRound(playerSelection) {
   let computerSelection = computerPlay();
-  console.log(playRound(playerSelection, computerSelection));
+  let result = '';
+  
+  if ((playerSelection === 'rock' && computerSelection === 'scissors') || 
+  (playerSelection === 'scissors' && computerSelection === 'paper') || 
+  (playerSelection === 'paper' && computerSelection === 'rock')) {
+    
+    humanScore++;
+    result = `You win! ${playerSelection} beats ${computerSelection}. <br><br> Player score: ${humanScore} <br> Computer score: ${computerScore}`;
+
+    if (humanScore === 5) {
+      result += `<br><br>You won the game! Reload the page to play again.`
+      disableButtons();
+    }
+  }
+  else if (playerSelection === computerSelection) {
+    result = `It's a tie. You both chose ${playerSelection}. <br><br> Player score: ${humanScore} <br> Computer score: ${computerScore}`;
+  }
+  else {
+    computerScore++;
+    result = `You lose! ${playerSelection} beats ${computerSelection}. <br><br> Player score: ${humanScore} <br> Computer score: ${computerScore}`;
+
+    if (computerScore === 5) {
+      result += `<br><br>You lost the game! Reload the page to play again.`
+      disableButtons();
+    }
+  }
+
+  document.getElementById('result').innerHTML = result
+  return
 }
+
+buttons.forEach(button =>{
+  button.addEventListener('click', function(){
+    playRound(button.value)
+  })
+})
 
 
 
